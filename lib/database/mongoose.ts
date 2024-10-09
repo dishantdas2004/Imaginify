@@ -14,9 +14,11 @@ interface MongooseConnection {
 // without any optimization would mean too many mongodb connections open for each and every action we perform on 
 // the server side. So to optimize the process we resort to caching our connection
 
+// eslint-disable-next-line
 let cached: MongooseConnection = (global as any).mongoose as MongooseConnection
 
 if(!cached) {
+    // eslint-disable-next-line
     cached = (global as any).mongoose= {
         conn: null,
         promise: null
