@@ -32,14 +32,14 @@
 //   publicId: z.string(),
 // });
 
-// import React, { useState } from "react";
+// import React, { useState, useTransition } from "react";
 // import {
 //   aspectRatioOptions,
 //   defaultValues,
 //   transformationTypes,
 // } from "@/constants";
 // import { CustomField } from "./CustomField";
-// import { AspectRatioKey } from "@/lib/utils";
+// import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 
 // const TransformationForm = ({
 //   action,
@@ -57,6 +57,7 @@
 //   const [isSubmitting, setIsSubmitting] = useState(false)
 //   const [isTransforming, setIsTransforming] = useState(false)
 //   const [transformationConfig, setTransformationConfig] = useState(config)
+//   const [isPending, startTransition] = useTransition()
 
 
 //   const initialValues =
@@ -93,6 +94,8 @@
 //     }))
 
 //     setNewTransformation(transformationType.config)
+
+//     return onChangeField(value)
 //   };
 
 //   const onInputChangeHandler = (
@@ -100,9 +103,36 @@
 //     value: string,
 //     type: string,
 //     onChangeField: (value: string) => void
-//   ) => {};
+//   ) => {
+//     debounce(() => {
+//       setNewTransformation((prevState: any) => ({
+//         ...prevState,
+//         [type]: {
+//           ...prevState?.type,
+//           [fieldName === 'prompt' ? 'prompt' : 'to']: value
+//         }
+//       }))
 
-//   const onTransformHandler = () => {}
+//       return onChangeField(value)
+//     }, 1000)
+//     // a debounced input waits a specific amt of time and registers your entry whereas with a regular input every 
+//     // single keystroke is registered. If all the requests are sent to backend it will put unnecessary stress on server
+
+//   };
+
+//   // TODO: Return to updateCredits
+//   const onTransformHandler = () => {
+//     setIsTransforming(true)
+//     setTransformationConfig(
+//       deepMergeObjects(newTransformation, transformationConfig)
+//     )
+
+//     setNewTransformation(null)
+
+//     startTransition(async () => {
+//       // await updateCredits(userId, creditFee)
+//     })
+//   }
 
 //   return (
 //     <Form {...form}>
